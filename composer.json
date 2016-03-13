@@ -22,9 +22,6 @@
     "autoload": {
         "psr-4": {
             "Themsaid\\MailPreview\\": "src"
-        },
-        "classmap": [
-            "tests"
-        ]
+        }
     }
 }
