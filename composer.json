@@ -1,5 +1,5 @@
 {
-    "name": "themsaid/laravel-preview-mail-driver",
+    "name": "themsaid/laravel-mail-preview",
     "description": "Adds a 'preview' mail driver for testing emails in laravel.",
     "keywords": ["laravel", "mail"],
     "homepage": "https://github.com/themsaid/laravel-preview-mail-driver",
