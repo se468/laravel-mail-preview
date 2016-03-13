@@ -2,6 +2,7 @@
 
 namespace Themsaid\MailPreview;
 
+use Swift_Mailer;
 use Illuminate\Mail\MailServiceProvider;
 
 class MailPreviewServiceProvider extends MailServiceProvider
@@ -25,37 +26,41 @@ class MailPreviewServiceProvider extends MailServiceProvider
      */
     public function register()
     {
+        parent::register();
+
         $this->mergeConfigFrom(
             __DIR__.'/config/mailpreview.php', 'mailpreview'
         );
     }
 
     /**
-     * Register the Swift Transport instance.
+     * Register the Swift Mailer instance.
      *
      * @return void
      */
-    function registerSwiftTransport()
+    function registerSwiftMailer()
     {
         if ($this->app['config']['mail.driver'] == 'preview') {
-            $this->registerPreviewTransport();
+            $this->registerPreviewSwiftMailer();
         } else {
-            parent::registerSwiftTransport();
+            parent::registerSwiftMailer();
         }
     }
 
     /**
-     * Register the Preview Transport instance.
+     * Register the Preview Swift Mailer instance.
      *
      * @return void
      */
-    private function registerPreviewTransport()
+    private function registerPreviewSwiftMailer()
     {
-        $this->app['swift.transport'] = $this->app->share(function ($app) {
-            return new PreviewTransport(
-                $app->make('Illuminate\Filesystem\Filesystem'),
-                $app['config']['mailpreview.path'],
-                $app['config']['mailpreview.maximum_lifetime']
+        $this->app['swift.mailer'] = $this->app->share(function ($app) {
+            return new Swift_Mailer(
+                new PreviewTransport(
+                    $app->make('Illuminate\Filesystem\Filesystem'),
+                    $app['config']['mailpreview.path'],
+                    $app['config']['mailpreview.maximum_lifetime']
+                )
             );
         });
     }
