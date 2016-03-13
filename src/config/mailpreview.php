@@ -16,7 +16,7 @@ return [
 
     /**
      * --------------------------------------------------------------------------
-     * Time in seconds to keep old previews.
+     * Time in seconds to keep old previews
      * --------------------------------------------------------------------------
      *
      * This option determines how long (in seconds) the mail transformer should
