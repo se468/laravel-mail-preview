@@ -12,7 +12,7 @@ return [
      *
      */
 
-    'path' => storage_path('framework/emails'),
+    'path' => storage_path('email-previews'),
 
     /**
      * --------------------------------------------------------------------------
