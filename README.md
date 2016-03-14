@@ -27,7 +27,7 @@ Then publish the config file:
 php artisan vendor:publish
 ```
 
-Finally, change `MAIL_DRIVER` to `preview` in your `.env` file as follow:
+Finally, change `MAIL_DRIVER` to `preview` in your `.env` file:
 
 ```
 MAIL_DRIVER=preview
