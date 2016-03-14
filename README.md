@@ -21,13 +21,17 @@ Once composer is done, add the package service provider in the providers array i
 Themsaid\MailPreview\MailPreviewServiceProvider::class
 ```
 
-Finally publish the config file:
+Then publish the config file:
 
 ```
 php artisan vendor:publish
 ```
 
-That's all, you only need to change the `MAIL_DRIVER` environment variable in the `.env` file to become `preview`.
+Finally, change `MAIL_DRIVER` to `preview` in your `.env` file as follow:
+
+```
+MAIL_DRIVER=preview
+```
 
 ## How it works
 
