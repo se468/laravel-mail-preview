@@ -56,8 +56,13 @@ class PreviewTransport extends Transport
         $this->cleanOldPreviews();
 
         $this->files->put(
-            $this->getEmailPreviewPath($message),
-            $this->getEmailPreviewContent($message)
+            $this->getPreviewFilePath($message).'.html',
+            $this->getHTMLPreviewContent($message)
+        );
+
+        $this->files->put(
+            $this->getPreviewFilePath($message).'.eml',
+            $this->getEMLPreviewContent($message)
         );
     }
 
@@ -68,27 +73,39 @@ class PreviewTransport extends Transport
      *
      * @return string
      */
-    protected function getEmailPreviewPath(Swift_Mime_Message $message)
+    protected function getPreviewFilePath(Swift_Mime_Message $message)
     {
         $to = str_replace(['@', '.'], ['_at_', '_'], array_keys($message->getTo())[0]);
 
         $subject = $message->getSubject();
 
-        return $this->previewPath.'/'.str_slug($message->getDate().'_'.$to.'_'.$subject, '_').'.html';
+        return $this->previewPath.'/'.str_slug($message->getDate().'_'.$to.'_'.$subject, '_');
     }
 
     /**
-     * Get the content of the email preview file.
+     * Get the HTML content for the preview file.
      *
      * @param  \Swift_Mime_Message $message
      *
      * @return string
      */
-    protected function getEmailPreviewContent(Swift_Mime_Message $message)
+    protected function getHTMLPreviewContent(Swift_Mime_Message $message)
     {
         $messageInfo = $this->getMessageInfo($message);
 
         return $messageInfo.$message->getBody();
+    }
+
+    /**
+     * Get the EML content for the preview file.
+     *
+     * @param  \Swift_Mime_Message $message
+     *
+     * @return string
+     */
+    protected function getEMLPreviewContent(Swift_Mime_Message $message)
+    {
+        return $message->toString();
     }
 
     /**

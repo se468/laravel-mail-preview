@@ -4,8 +4,8 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/themsaid/laravel-mail-preview.svg?style=flat-square)](https://packagist.org/packages/themsaid/laravel-mail-preview)
 
-This package introduces a new `preview` mail driver for laravel, when selected it will produce the output of the
-sent emails and save it as HTML documents for you to check in a web browser.
+This package introduces a new `preview` mail driver for laravel, when selected it will produce the content of the
+sent mail and save it as .html & .eml documents.
 
 ## Installation
 
@@ -35,14 +35,20 @@ MAIL_DRIVER=preview
 
 ## How it works
 
-On every email sent a HTML document will be generated in `storage/email-previews` with a name that includes the first receiver and the subject:
+On every email sent a `.html` & a `.eml` documents will be generated in `storage/email-previews` with a name that includes the first receiver and the subject:
 
 ```
 1457904864_jack_at_gmail_com_invoice_000234.html
+1457904864_jack_at_gmail_com_invoice_000234.eml
 ```
 
-When opened in a web browser you'll be able to see how your email will look like, however there might be some differences that varies from
-an email client to another.
+You can open the `.html` file in a web browser, or open the `.eml` file in your default email client to have a realistic look
+at the final output.
+
+### Preview in a web browser
+
+When you open the `.html` file in a web browser you'll be able to see how your email will look like, however there might be
+some differences that varies from an email client to another.
 
 At the beginning of the generated file you'll find a HTML comment with all the message info:
 
@@ -50,7 +56,7 @@ At the beginning of the generated file you'll find a HTML comment with all the m
 <!--
 From:{"info@acme.com":"Acme HQ"},
 to:{"jack@gmail.com":"Jack Black"},
-reply-to:"info@acme.com",
+reply-to:{"info@acme.com"},
 cc:[{"finance@acme.com":"Acme Finance"}, {"management@acme.com":"Acme Management"}],
 bcc:null,
 subject:Invoice #000234
