@@ -24,7 +24,7 @@ Themsaid\MailPreview\MailPreviewServiceProvider::class
 Then publish the config file:
 
 ```
-php artisan vendor:publish
+php artisan vendor:publish --provider="Themsaid\MailPreview\MailPreviewServiceProvider"
 ```
 
 Finally, change `MAIL_DRIVER` to `preview` in your `.env` file:
