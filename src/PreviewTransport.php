@@ -34,6 +34,7 @@ class PreviewTransport extends Transport
      *
      * @param  \Illuminate\Filesystem\Filesystem $files
      * @param  string $previewPath
+     * @param  int $lifeTime
      *
      * @return void
      */
