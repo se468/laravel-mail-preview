@@ -26,4 +26,17 @@ return [
      */
 
     'maximum_lifetime' => 60,
+
+    /**
+     * --------------------------------------------------------------------------
+     * An option to enable showing a HTML link on mail sent
+     * --------------------------------------------------------------------------
+     *
+     * This option determines if you would like to show a HTML link at the top
+     * left corner of your screen every time and email is sent from your
+     * system, the link will point the browser to the preview file.
+     *
+     */
+
+    'show_link_to_preview' => true,
 ];

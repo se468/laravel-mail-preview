@@ -57,7 +57,7 @@ class PreviewTransport extends Transport
 
         $this->cleanOldPreviews();
 
-        Session::put('mail_preview_path', $previewPath = $this->getPreviewFilePath($message));
+        Session::put('mail_preview_path', basename($previewPath = $this->getPreviewFilePath($message)));
 
         $this->files->put(
             $previewPath.'.html',

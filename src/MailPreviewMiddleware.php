@@ -24,10 +24,10 @@ class MailPreviewMiddleware
             $response = $this->handleException($request, $e);
         }
 
-        if ($response instanceOf Response && $previewPath = $request->session()->get('mail_preview')) {
+        if ($response instanceOf Response && $previewPath = $request->session()->get('mail_preview_path')) {
             $this->addLinkToResponse($response, $previewPath);
 
-            $request->session()->forget('mail_preview');
+            $request->session()->forget('mail_preview_path');
         }
 
         return $response;
@@ -55,7 +55,7 @@ class MailPreviewMiddleware
             border:solid 1px #ccc;
             padding: 15px;
             '>
-        An email was just sent: <a href='".url('/mail-preview-driver?path='.$previewPath)."'>Preview Sent Email</a>
+        An email was just sent: <a href='".url('/themsaid/mail-preview?path='.$previewPath)."'>Preview Sent Email</a>
         </div>";
 
         $linkHTML .= "<script type=\"text/javascript\">";
