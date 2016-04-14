@@ -2,6 +2,7 @@
 
 namespace Themsaid\MailPreview;
 
+use Illuminate\Support\Facades\Session;
 use Swift_Mime_Message;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Mail\Transport\Transport;
@@ -55,6 +56,8 @@ class PreviewTransport extends Transport
         $this->createEmailPreviewDirectory();
 
         $this->cleanOldPreviews();
+
+        Session::put('mail_preview', $this->getPreviewFilePath($message));
 
         $this->files->put(
             $this->getPreviewFilePath($message).'.html',
