@@ -2,6 +2,7 @@
 
 namespace Themsaid\MailPreview;
 
+use Illuminate\Foundation\Http\Kernel;
 use Swift_Mailer;
 use Illuminate\Mail\MailServiceProvider;
 
@@ -17,6 +18,26 @@ class MailPreviewServiceProvider extends MailServiceProvider
         $this->publishes([
             __DIR__.'/config/mailpreview.php' => config_path('mailpreview.php'),
         ]);
+
+        $this->app[Kernel::class]->pushMiddleware(
+            MailPreviewMiddleware::class
+        );
+
+        if (! $this->app->routesAreCached()) {
+            $this->app['router']->get('/themsaid/mail-preview', function () {
+                if ($previewPath = $this->app['request']->input('path')) {
+                    $content = file_get_contents($previewPath.'.html');
+                } else {
+                    $lastPreviewName = last(glob(storage_path('email-previews').'/*.html'));
+
+                    $content = file_get_contents(
+                        storage_path('email-previews/'.$lastPreviewName)
+                    );
+                }
+
+                return $content;
+            });
+        }
     }
 
     /**
