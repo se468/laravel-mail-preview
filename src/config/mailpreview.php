@@ -39,4 +39,15 @@ return [
      */
 
     'show_link_to_preview' => true,
+
+    /**
+     * --------------------------------------------------------------------------
+     * Set middleware array for the preview route
+     * --------------------------------------------------------------------------
+     *
+     * Useful for web middleware group in laravel 5.2
+     */
+
+    'middleware' => [
+    ],
 ];
