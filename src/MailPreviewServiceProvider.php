@@ -22,7 +22,11 @@ class MailPreviewServiceProvider extends ServiceProvider
 
         if ($this->app['config']['mailpreview.show_link_to_preview']) {
             if (! $this->app->routesAreCached()) {
-                $this->app['router']->group(['middleware' => $this->app['config']['mailpreview.middleware']], function($router) {
+
+                // Check if middleware config option is set correctly
+                $middleware = (is_array($this->app['config']['mailpreview.middleware']) ? $this->app['config']['mailpreview.middleware'] : []);
+
+                $this->app['router']->group(['middleware' => $middleware], function($router) {
                     $router->get('/themsaid/mail-preview', function () {
                         if ($previewPath = $this->app['request']->input('path')) {
                             $content = file_get_contents(storage_path('email-previews/'.$previewPath.'.html'));
