@@ -42,12 +42,14 @@ return [
 
     /**
      * --------------------------------------------------------------------------
-     * Set middleware array for the preview route
+     * Set middleware for the mail preview route
      * --------------------------------------------------------------------------
      *
-     * Useful for web middleware group in laravel 5.2
+     * This option allows for setting middlewares for the route that shows a
+     * preview to the mail that was just sent.
      */
 
     'middleware' => [
+
     ],
 ];
