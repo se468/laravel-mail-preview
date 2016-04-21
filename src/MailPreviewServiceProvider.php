@@ -22,7 +22,7 @@ class MailPreviewServiceProvider extends ServiceProvider
 
         if ($this->app['config']['mailpreview.show_link_to_preview']) {
             if (! $this->app->routesAreCached()) {
-                $this->app['router']->group(['middleware' => (array) $this->app['config']['mailpreview.middleware']], function ($router) {
+                $this->app['router']->group(['middleware' => $this->middleware()], function ($router) {
                     $router->get('/themsaid/mail-preview', function () {
                         if ($previewPath = $this->app['request']->input('path')) {
                             $content = file_get_contents(storage_path('email-previews/'.$previewPath.'.html'));
@@ -51,6 +51,19 @@ class MailPreviewServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(
             __DIR__.'/config/mailpreview.php', 'mailpreview'
+        );
+    }
+
+    /**
+     * The array of middleware for the preview route.
+     *
+     * @return array
+     */
+    private function middleware()
+    {
+        return array_merge(
+            (array) $this->app['config']['mailpreview.middleware'],
+            [\Illuminate\Session\Middleware\StartSession::class]
         );
     }
 }
