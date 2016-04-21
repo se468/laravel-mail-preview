@@ -20,6 +20,10 @@ class MailPreviewServiceProvider extends ServiceProvider
 
         $this->app->register(MailProvider::class);
 
+        if ($this->app['config']['mail.driver'] != 'preview') {
+            return;
+        }
+
         if ($this->app['config']['mailpreview.show_link_to_preview']) {
             if (! $this->app->routesAreCached()) {
                 $this->app['router']->group(['middleware' => $this->middleware()], function ($router) {
