@@ -16,13 +16,7 @@ class MailPreviewMiddleware
      */
     public function handle($request, Closure $next)
     {
-        try {
-            $response = $next($request);
-        } catch (\Exception $e) {
-            $response = $this->handleException($request, $e);
-        } catch (\Throwable $e) {
-            $response = $this->handleException($request, $e);
-        }
+        $response = $next($request);
 
         if ($response instanceOf Response && $previewPath = $request->session()->get('mail_preview_path')) {
             $this->addLinkToResponse($response, $previewPath);
