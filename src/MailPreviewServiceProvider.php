@@ -18,8 +18,6 @@ class MailPreviewServiceProvider extends ServiceProvider
             __DIR__.'/config/mailpreview.php' => config_path('mailpreview.php'),
         ]);
 
-        $this->app->register(MailProvider::class);
-
         if ($this->app['config']['mail.driver'] != 'preview') {
             return;
         }
@@ -56,6 +54,8 @@ class MailPreviewServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/config/mailpreview.php', 'mailpreview'
         );
+
+        $this->app->register(MailProvider::class);
     }
 
     /**
