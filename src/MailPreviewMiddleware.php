@@ -18,12 +18,14 @@ class MailPreviewMiddleware
     {
         $response = $next($request);
 
-        if($request->session) {
-            if ($response instanceOf Response && $previewPath = $request->session()->get('mail_preview_path')) {
-                $this->addLinkToResponse($response, $previewPath);
+        if (
+            $request->hasSession() &&
+            $response instanceOf Response &&
+            $previewPath = $request->session()->get('mail_preview_path')
+        ) {
+            $this->addLinkToResponse($response, $previewPath);
 
-                $request->session()->forget('mail_preview_path');
-            }
+            $request->session()->forget('mail_preview_path');
         }
 
         return $response;
