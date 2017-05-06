@@ -66,3 +66,12 @@ subject:Invoice #000234
 ## Package Configurations
 From the configuration file you'll be able to change the previews output location as well as the maximum life time for
 keeping previews, after this time old previews will get removed.
+
+### Logged out after clicked on the preview link
+You always will lose your current session, if you click on the generated notification link. This is because Laravel stores the session in an encrypted cookie. To change this behavior, you have to adjust the `middleware` property in the `config/mailpreview.php` file to match the following snippet:
+
+```php
+    'middleware' => [
+        \App\Http\Middleware\EncryptCookies::class,
+    ],
+```
