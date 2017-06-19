@@ -23,20 +23,10 @@ class MailPreviewServiceProvider extends ServiceProvider
         }
 
         if ($this->app['config']['mailpreview.show_link_to_preview']) {
-            if (! $this->app->routesAreCached()) {
-                $this->app['router']->group(['middleware' => $this->middleware()], function ($router) {
-                    $router->get('/themsaid/mail-preview', function () {
-                        if ($previewPath = $this->app['request']->input('path')) {
-                            $content = file_get_contents($this->app['config']['mailpreview.path'].'/'.$previewPath.'.html');
-                        } else {
-                            $lastPreviewName = last(glob($this->app['config']['mailpreview.path'].'/*.html'));
-                            $content = file_get_contents($lastPreviewName);
-                        }
-
-                        return $content;
-                    });
-                });
-            }
+            
+            $this->app['router']->group(['middleware' => $this->middleware()], function ($router) {
+                $router->get('/themsaid/mail-preview')->uses('Themsaid\MailPreview\MailPreviewController@preview');
+            });
 
             $this->app[Kernel::class]->pushMiddleware(
                 MailPreviewMiddleware::class
