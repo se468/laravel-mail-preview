@@ -16,7 +16,7 @@ class MailProvider extends MailServiceProvider
      */
     function registerSwiftMailer()
     {
-        if ($this->app['config']['mail.driver'] == 'preview') {
+        if ($this->app['config']['mail.driver'] == 'preview' || $this->app['config']['mail.preview'] == true) {
             $this->registerPreviewSwiftMailer();
         } else {
             parent::registerSwiftMailer();
