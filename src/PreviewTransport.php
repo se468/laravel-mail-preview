@@ -3,7 +3,7 @@
 namespace Themsaid\MailPreview;
 
 use Illuminate\Support\Facades\Session;
-use Swift_Mime_Message;
+use Swift_Mime_SimpleMessage;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Mail\Transport\Transport;
 
@@ -49,7 +49,7 @@ class PreviewTransport extends Transport
     /**
      * {@inheritdoc}
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
     {
         $this->beforeSendPerformed($message);
 
@@ -73,27 +73,27 @@ class PreviewTransport extends Transport
     /**
      * Get the path to the email preview file.
      *
-     * @param  \Swift_Mime_Message $message
+     * @param  \Swift_Mime_SimpleMessage $message
      *
      * @return string
      */
-    protected function getPreviewFilePath(Swift_Mime_Message $message)
+    protected function getPreviewFilePath(Swift_Mime_SimpleMessage $message)
     {
         $to = str_replace(['@', '.'], ['_at_', '_'], array_keys($message->getTo())[0]);
 
         $subject = $message->getSubject();
 
-        return $this->previewPath.'/'.str_slug($message->getDate().'_'.$to.'_'.$subject, '_');
+        return $this->previewPath.'/'.str_slug($message->getDate()->getTimestamp().'_'.$to.'_'.$subject, '_');
     }
 
     /**
      * Get the HTML content for the preview file.
      *
-     * @param  \Swift_Mime_Message $message
+     * @param  \Swift_Mime_SimpleMessage $message
      *
      * @return string
      */
-    protected function getHTMLPreviewContent(Swift_Mime_Message $message)
+    protected function getHTMLPreviewContent(Swift_Mime_SimpleMessage $message)
     {
         $messageInfo = $this->getMessageInfo($message);
 
@@ -103,11 +103,11 @@ class PreviewTransport extends Transport
     /**
      * Get the EML content for the preview file.
      *
-     * @param  \Swift_Mime_Message $message
+     * @param  \Swift_Mime_SimpleMessage $message
      *
      * @return string
      */
-    protected function getEMLPreviewContent(Swift_Mime_Message $message)
+    protected function getEMLPreviewContent(Swift_Mime_SimpleMessage $message)
     {
         return $message->toString();
     }
@@ -115,11 +115,11 @@ class PreviewTransport extends Transport
     /**
      * Generate a human readable HTML comment with message info.
      *
-     * @param \Swift_Mime_Message $message
+     * @param \Swift_Mime_SimpleMessage $message
      *
      * @return string
      */
-    private function getMessageInfo(Swift_Mime_Message $message)
+    private function getMessageInfo(Swift_Mime_SimpleMessage $message)
     {
         return sprintf(
             "<!--\nFrom:%s, \nto:%s, \nreply-to:%s, \ncc:%s, \nbcc:%s, \nsubject:%s\n-->\n",
