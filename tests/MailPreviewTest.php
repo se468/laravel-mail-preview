@@ -61,12 +61,12 @@ class MailPreviewTest extends TestCase
         $files->shouldReceive('files')->once()->with('framework/emails')->andReturn([]);
 
         $files->shouldReceive('put')->with(
-            'framework/emails/'.$message->getDate().'_me_at_example_com_foo_subject.html',
+            'framework/emails/'.$message->getDate()->getTimestamp().'_me_at_example_com_foo_subject.html',
             m::any()
         );
 
         $files->shouldReceive('put')->with(
-            'framework/emails/'.$message->getDate().'_me_at_example_com_foo_subject.eml',
+            'framework/emails/'.$message->getDate()->getTimestamp().'_me_at_example_com_foo_subject.eml',
             $message->toString()
         );
 
