@@ -15,12 +15,6 @@ Begin by installing the package through Composer. Run the following command in y
 composer require themsaid/laravel-mail-preview
 ```
 
-Once composer is done, add the package service provider in the providers array in `config/app.php`:
-
-```php
-Themsaid\MailPreview\MailPreviewServiceProvider::class
-```
-
 Then publish the config file:
 
 ```
