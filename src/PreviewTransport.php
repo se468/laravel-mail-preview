@@ -119,7 +119,7 @@ class PreviewTransport extends Transport
      *
      * @return string
      */
-    private function getMessageInfo(Swift_Mime_SimpleMessage $message)
+    protected function getMessageInfo(Swift_Mime_SimpleMessage $message)
     {
         return sprintf(
             "<!--\nFrom:%s, \nto:%s, \nreply-to:%s, \ncc:%s, \nbcc:%s, \nsubject:%s\n-->\n",
