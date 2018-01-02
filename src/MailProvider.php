@@ -28,7 +28,7 @@ class MailProvider extends MailServiceProvider
      *
      * @return void
      */
-    private function registerPreviewSwiftMailer()
+    protected function registerPreviewSwiftMailer()
     {
         $this->app->singleton('swift.mailer', function($app) {
             return new Swift_Mailer(
