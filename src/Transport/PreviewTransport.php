@@ -1,6 +1,6 @@
 <?php
 
-namespace Themsaid\MailPreview;
+namespace Themsaid\MailPreview\Transport;
 
 use Illuminate\Support\Facades\Session;
 use Swift_Mime_SimpleMessage;

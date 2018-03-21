@@ -20,7 +20,7 @@ class MailPreviewMiddleware
 
         if (
             $request->hasSession() &&
-            $response instanceOf Response &&
+            $response instanceof Response &&
             $previewPath = $request->session()->get('mail_preview_path')
         ) {
             $this->addLinkToResponse($response, $previewPath);
@@ -53,13 +53,13 @@ class MailPreviewMiddleware
             border:solid 1px #ccc;
             padding: 15px;
             '>
-        An email was just sent: <a href='".url('/themsaid/mail-preview?path='.$previewPath)."'>Preview Sent Email</a>
+        An email was just sent: <a href='" . url('/themsaid/mail-preview?path=' . $previewPath) . "'>Preview Sent Email</a>
         </div>";
 
         $linkHTML .= "<script type=\"text/javascript\">";
 
-        $linkHTML .= "setTimeout(function(){ 
-        document.body.removeChild(document.getElementById('MailPreviewDriverBox')); 
+        $linkHTML .= "setTimeout(function(){
+        document.body.removeChild(document.getElementById('MailPreviewDriverBox'));
         }, 8000);";
 
         $linkHTML .= "</script>";
@@ -67,7 +67,7 @@ class MailPreviewMiddleware
         $bodyPosition = strripos($content, '</body>');
 
         if (false !== $bodyPosition) {
-            $content = substr($content, 0, $bodyPosition).$linkHTML.substr($content, $bodyPosition);
+            $content = substr($content, 0, $bodyPosition) . $linkHTML . substr($content, $bodyPosition);
         }
 
         $response->setContent($content);

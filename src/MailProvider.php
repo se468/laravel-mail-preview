@@ -7,6 +7,9 @@ use Illuminate\Mail\MailServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Swift_Mailer;
 
+use Themsaid\MailPreview\Transport\LocalTransport;
+use Themsaid\MailPreview\Transport\PreviewTransport;
+
 class MailProvider extends MailServiceProvider
 {
     /**
@@ -18,6 +21,8 @@ class MailProvider extends MailServiceProvider
     {
         if ($this->app['config']['mail.driver'] == 'preview' || $this->app['config']['mail.preview'] == true) {
             $this->registerPreviewSwiftMailer();
+        } else if ($this->app['config']['mail.driver'] == 'local' || $this->app['config']['mail.local'] == true) {
+            $this->registerLocalSwiftMailer();
         } else {
             parent::registerSwiftMailer();
         }
@@ -37,6 +42,14 @@ class MailProvider extends MailServiceProvider
                     $app['config']['mailpreview.path'],
                     $app['config']['mailpreview.maximum_lifetime']
                 )
+            );
+        });
+    }
+
+    protected function registerLocalSwiftMailer () {
+        $this->app->singleton('swift.mailer', function($app) {
+            return new Swift_Mailer(
+                new LocalTransport()
             );
         });
     }

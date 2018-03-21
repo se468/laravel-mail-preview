@@ -17,6 +17,16 @@ class MailPreviewServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/config/mailpreview.php' => config_path('mailpreview.php'),
         ]);
+        $this->loadRoutesFrom(__DIR__."/routes/web.php");
+        $this->loadViewsFrom(__DIR__."/resources/views", "PreviewEmail");
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+        
+        require_once __DIR__.'/Http/Helpers/helpers.php';
+
+        $this->publishes([
+            __DIR__.'/public' => public_path('vendor/se468/laravel-preview-email'),
+        ], 'public');
+
 
         if ($this->app['config']['mail.driver'] != 'preview') {
             return;
