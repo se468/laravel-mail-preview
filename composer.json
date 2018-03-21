@@ -14,6 +14,12 @@
             "email": "seyong@seyongcho.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/se468/laravel-mail-preview"
+        }
+    ],
     "require": {
         "php": ">=5.5.9",
         "illuminate/support": "~5.5",
