@@ -1,4 +1,4 @@
-# Laravel Mail Preview / Local Driver
+# Laravel Mail Preview / Local Email Inbox Driver
 
 Forked from [Laravel Mail Preview](https://github.com/themsaid/laravel-mail-preview). 
 
