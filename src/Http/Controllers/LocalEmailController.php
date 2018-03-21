@@ -9,12 +9,12 @@ use Themsaid\MailPreview\Http\LocalEmail;
 class LocalEmailController extends Controller{
 
     public function index () {
-        /* Only for Development */
+        /* Only for Development
         Artisan::call('vendor:publish', [
             '--tag' => 'public', 
             '--force' => 1
         ]);
-        /* Only for Development */
+        */
 
         $emails = LocalEmail::all();
         return view("PreviewEmail::index", [

@@ -31,6 +31,10 @@ MAIL_DRIVER=local
 
 Run 
 ```
+php artisan migrate
+
+and
+
 php artisan vendor:publish --tag=public --force
 ```
 

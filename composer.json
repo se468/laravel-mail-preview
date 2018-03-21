@@ -40,11 +40,6 @@
             "tests"
         ]
     },
-    "scripts": {
-        "post-update-cmd": [
-            "@php artisan vendor:publish --tag=public --force\""
-        ]
-    },
     "extra": {
         "laravel": {
             "providers": [
