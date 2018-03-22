@@ -53,7 +53,7 @@ at the final output.
 
 ### Local Email Storage
 
-If you are using `local` for the `MAIL_DRIVER`, you can go to `/preview-email` route to see all the emails that has been stored. It will create a local inbox where you can see and preview the emails that's sent out.
+If you are using `local` for the `MAIL_DRIVER`, you can go to `/email-previews` route to see all the emails that has been stored. It will create a local inbox where you can see and preview the emails that's sent out.
 
 ### Preview in a web browser
 

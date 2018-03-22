@@ -8,9 +8,6 @@ class LocalEmail extends Model
 {
     protected $table = 'local_emails';
     public $fillable = [
-        'from','to','reply_to','cc','bcc','subject','body'
+        'from','to','reply_to','cc','bcc','subject','body','read'
     ];
-
-
-
 }

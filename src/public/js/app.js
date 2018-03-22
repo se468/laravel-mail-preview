@@ -308,11 +308,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['emails'],
     data: function data() {
         return {
+            emailList: [],
             selectedEmail: {}
         };
     },
@@ -327,18 +356,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         prepareComponent: function prepareComponent() {
             console.log(moment("20111031", "YYYYMMDD").fromNow());
+
+            this.emailList = this.emails;
         },
         getDate: function getDate(date) {
             return moment(date, "YYYYMMDD").fromNow();
         },
         selectEmail: function selectEmail(email) {
-            console.log(email);
             this.selectedEmail = email;
+
+            this.markread(email);
         },
-        store: function store() {
-            var url = "";
+        markread: function markread(email) {
+            var url = "/email-previews";
+            var data = email;
             axios.post(url, data).then(function (response) {
                 console.log(response);
+                email.read = true;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        deleteEmail: function deleteEmail(email) {
+            var self = this;
+            var url = "/email-previews/" + email.id;
+
+            axios.delete(url).then(function (response) {
+                console.log(response);
+
+                var index = self.emailList.indexOf(email);
+                self.emailList.splice(index, 1);
             }).catch(function (error) {
                 console.log(error);
             });
@@ -356,147 +403,232 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "container-fluid mt-4" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-4" }, [
-          _c(
-            "ul",
-            { staticClass: "list-group" },
-            _vm._l(_vm.emails, function(email) {
-              return _c(
-                "li",
-                {
-                  staticClass: "list-group-item",
-                  on: {
-                    click: function($event) {
-                      _vm.selectEmail(email)
-                    }
-                  }
-                },
-                [
-                  _c("div", [
-                    _vm._v(
-                      "\n                            " +
-                        _vm._s(email.subject) +
-                        "\n                        "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-secondary" },
+      _vm.emailList.length > 0
+        ? _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-4" }, [
+              _c(
+                "ul",
+                { staticClass: "list-group" },
+                _vm._l(_vm.emailList, function(email) {
+                  return _c(
+                    "li",
+                    {
+                      staticClass: "list-group-item",
+                      class: {
+                        "list-group-item-secondary":
+                          email.id == _vm.selectedEmail.id
+                      },
+                      on: {
+                        click: function($event) {
+                          _vm.selectEmail(email)
+                        }
+                      }
+                    },
                     [
-                      _vm._v(
-                        "\n                            To: \n                            "
-                      ),
-                      _vm._l(JSON.parse(email.to), function(value, key) {
-                        return _c("span", [
+                      _c("div", { staticClass: "mb-2" }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(email.subject) +
+                            " - \n                            "
+                        ),
+                        _c(
+                          "span",
+                          {
+                            staticClass: "badge",
+                            class: {
+                              "badge-warning": !email.read,
+                              "badge-success": email.read
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(email.read ? "READ" : "UNREAD") +
+                                "\n                            "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "close",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                _vm.deleteEmail(email)
+                              }
+                            }
+                          },
+                          [
+                            _c("span", { attrs: { "aria-hidden": "true" } }, [
+                              _vm._v("×")
+                            ])
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "small",
+                        { staticClass: "text-secondary" },
+                        [
                           _vm._v(
-                            "\n                                " +
-                              _vm._s(key) +
-                              " " +
-                              _vm._s(value) +
-                              "\n                            "
+                            "\n                            To: \n                            "
+                          ),
+                          _vm._l(JSON.parse(email.to), function(value, key) {
+                            return _c("span", [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(key) +
+                                  " " +
+                                  _vm._s(value) +
+                                  "\n                            "
+                              )
+                            ])
+                          })
+                        ],
+                        2
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "small",
+                        { staticClass: "text-secondary float-right" },
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.getDate(email.created_at)) +
+                              "\n                        "
                           )
-                        ])
-                      })
-                    ],
-                    2
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "text-secondary" }, [
-                    _vm._v(
-                      "\n                            " +
-                        _vm._s(_vm.getDate(email.created_at)) +
-                        "\n                        "
-                    )
-                  ])
-                ]
+                        ]
+                      )
+                    ]
+                  )
+                })
               )
-            })
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-8" }, [
-          _vm.selectedEmail.subject
-            ? _c("div", { staticClass: "card" }, [
-                _c("div", { staticClass: "card-body" }, [
-                  _c("h5", { staticClass: "card-title" }, [
-                    _vm._v(
-                      "\n                            " +
-                        _vm._s(_vm.selectedEmail.subject) +
-                        "\n                        "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("h6", { staticClass: "card-subtitle mb-2 text-muted" }, [
-                    _vm._v(
-                      "\n                            " +
-                        _vm._s(_vm.getDate(_vm.selectedEmail.created_at)) +
-                        "\n                        "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("h6", { staticClass: "card-subtitle mb-2 text-muted" }, [
-                    _c(
-                      "div",
-                      [
-                        _vm._v(
-                          "\n                                From: \n                                "
-                        ),
-                        _vm._l(JSON.parse(_vm.selectedEmail.from), function(
-                          value,
-                          key
-                        ) {
-                          return _c("span", [
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-8" }, [
+              _c("div", { staticClass: "card" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  [
+                    _vm.selectedEmail.subject
+                      ? [
+                          _c("h5", { staticClass: "card-title" }, [
                             _vm._v(
-                              "\n                                    " +
-                                _vm._s(key) +
-                                " " +
-                                _vm._s(value) +
-                                "\n                                "
+                              "\n                                " +
+                                _vm._s(_vm.selectedEmail.subject) +
+                                " \n                            "
                             )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "small",
+                            {
+                              staticClass:
+                                "card-subtitle mb-2 text-muted float-right"
+                            },
+                            [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(
+                                    _vm.getDate(_vm.selectedEmail.created_at)
+                                  ) +
+                                  "\n                            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "small",
+                            { staticClass: "card-subtitle mb-2 text-muted" },
+                            [
+                              _c(
+                                "div",
+                                [
+                                  _vm._v(
+                                    "\n                                    From: \n                                    "
+                                  ),
+                                  _vm._l(
+                                    JSON.parse(_vm.selectedEmail.from),
+                                    function(value, key) {
+                                      return _c("span", [
+                                        _vm._v(
+                                          "\n                                        " +
+                                            _vm._s(key) +
+                                            " " +
+                                            _vm._s(
+                                              value ? "<" + value + ">" : ""
+                                            ) +
+                                            "\n                                    "
+                                        )
+                                      ])
+                                    }
+                                  )
+                                ],
+                                2
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                [
+                                  _vm._v(
+                                    "\n                                    To: \n                                    "
+                                  ),
+                                  _vm._l(
+                                    JSON.parse(_vm.selectedEmail.to),
+                                    function(value, key) {
+                                      return _c("span", [
+                                        _vm._v(
+                                          "\n                                        " +
+                                            _vm._s(key) +
+                                            " " +
+                                            _vm._s(value) +
+                                            "\n                                    "
+                                        )
+                                      ])
+                                    }
+                                  )
+                                ],
+                                2
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "card" }, [
+                            _c("div", {
+                              staticClass: "card-text",
+                              domProps: {
+                                innerHTML: _vm._s(_vm.selectedEmail.body)
+                              }
+                            })
                           ])
-                        })
-                      ],
-                      2
-                    ),
+                        ]
+                      : _vm._e(),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      [
-                        _vm._v(
-                          "\n                                To: \n                                "
-                        ),
-                        _vm._l(JSON.parse(_vm.selectedEmail.to), function(
-                          value,
-                          key
-                        ) {
-                          return _c("span", [
-                            _vm._v(
-                              "\n                                    " +
-                                _vm._s(key) +
-                                " " +
-                                _vm._s(value) +
-                                "\n                                "
-                            )
-                          ])
-                        })
-                      ],
-                      2
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", {
-                      staticClass: "card-text",
-                      domProps: { innerHTML: _vm._s(_vm.selectedEmail.body) }
-                    })
-                  ])
-                ])
+                    !_vm.selectedEmail.subject
+                      ? [
+                          _vm._v(
+                            "\n                            Select an email\n                        "
+                          )
+                        ]
+                      : _vm._e()
+                  ],
+                  2
+                )
               ])
-            : _vm._e()
-        ])
-      ])
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.emailList.length == 0
+        ? _c("div", [
+            _vm._v(
+              "\n            You have no emails sent out yet. Start sending emails!\n        "
+            )
+          ])
+        : _vm._e()
     ])
   ])
 }

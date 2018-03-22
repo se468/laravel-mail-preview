@@ -1,62 +1,90 @@
 <template>
     <div>
         <div class="container-fluid mt-4">
-            <div class="row">
+            <div class="row" v-if="emailList.length > 0">
                 <div class="col-4">
                     <ul class="list-group">
                         
                         <li class="list-group-item" 
-                            v-for="email in emails" 
-                            @click="selectEmail(email)">
+                            v-for="email in emailList" 
+                            @click="selectEmail(email)"
+                            :class="{'list-group-item-secondary' : email.id == selectedEmail.id }">
+                            
+                            <div class="mb-2">
+                                {{ email.subject }} - 
+                                <span class="badge" :class="{ 'badge-warning' : !email.read, 'badge-success' : email.read }">
+                                    {{ email.read ? 'READ' : 'UNREAD' }}
+                                </span>
 
-                            <div>
-                                {{ email.subject }}
+                                <button type="button" class="close" @click="deleteEmail(email)">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
 
-                            <div class="text-secondary">
+                            <small class="text-secondary">
                                 To: 
                                 <span v-for="(value, key) in JSON.parse(email.to)">
                                     {{ key }} {{ value }}
                                 </span>
-                            </div>
-                            <div class="text-secondary">
+                            </small>
+                            <small class="text-secondary float-right">
                                 {{ getDate(email.created_at) }}
-                            </div>
+                            </small>
+
                         </li>
                     </ul>
+
+
                 </div>
 
                 <div class="col-8">
-                    <div class="card" v-if="selectedEmail.subject">
+                    <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                {{ selectedEmail.subject }}
-                            </h5>
-                            <h6 class="card-subtitle mb-2 text-muted">
-                                {{ getDate(selectedEmail.created_at) }}
-                            </h6>
-                            <h6 class="card-subtitle mb-2 text-muted">
-                                <div>
-                                    From: 
-                                    <span v-for="(value, key) in JSON.parse(selectedEmail.from)">
-                                        {{ key }} {{ value }}
-                                    </span>
-                                </div>
-                                <div>
-                                    To: 
-                                    <span v-for="(value, key) in JSON.parse(selectedEmail.to)">
-                                        {{ key }} {{ value }}
-                                    </span>
-                                </div>
-                            </h6>
-                            <div class="card">
-                                <div class="card-text" v-html="selectedEmail.body">
-                                </div>
-                            </div>
+                            <template v-if="selectedEmail.subject">
                             
+                                <h5 class="card-title">
+                                    {{ selectedEmail.subject }} 
+                                </h5>
+                                <small class="card-subtitle mb-2 text-muted float-right">
+                                    {{ getDate(selectedEmail.created_at) }}
+                                </small>
+
+                                
+                                <small class="card-subtitle mb-2 text-muted">
+                                    <div>
+                                        From: 
+                                        <span v-for="(value, key) in JSON.parse(selectedEmail.from)">
+                                            {{ key }} {{ value ? '<' + value + '>': ''}}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        To: 
+                                        <span v-for="(value, key) in JSON.parse(selectedEmail.to)">
+                                            {{ key }} {{ value }}
+                                        </span>
+                                    </div>
+
+                                    
+                                </small>
+
+                                <div class="card">
+                                    <div class="card-text" v-html="selectedEmail.body">
+                                    </div>
+                                </div>
+                                
+                            
+                            </template>
+
+                            <template v-if="!selectedEmail.subject">
+                                Select an email
+                            </template>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div v-if="emailList.length == 0">
+                You have no emails sent out yet. Start sending emails!
             </div>
         </div>
     </div>
@@ -68,6 +96,7 @@
         props: ['emails'],
         data() {
             return {
+                emailList : [],
                 selectedEmail: {}
             }
         },
@@ -84,20 +113,42 @@
         methods: {
             prepareComponent() {
                 console.log(moment("20111031", "YYYYMMDD").fromNow());
+
+                this.emailList = this.emails;
             },
             getDate (date) {
                 return moment(date, "YYYYMMDD").fromNow();
             },
             selectEmail (email) {
-                console.log(email);
                 this.selectedEmail = email;
+
+                this.markread(email);
             },
 
-            store () {
-                var url = "";
+            markread (email) {
+                var url = "/email-previews";
+                var data = email;
                 axios.post(url, data)
                     .then(function (response) {
                         console.log(response);
+                        email.read = true;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            deleteEmail (email) {
+                var self = this;
+                var url = "/email-previews/" + email.id;
+
+
+                axios.delete(url)
+                    .then(function (response) {
+                        console.log(response);
+
+                        var index = self.emailList.indexOf(email);
+                        self.emailList.splice(index, 1);
                     })
                     .catch(function (error) {
                         console.log(error);
