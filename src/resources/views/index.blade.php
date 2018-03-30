@@ -21,6 +21,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.js"></script>
+    <link rel="stylesheet" href="{{ preview_email_asset('css/app.css') }}">
     <script type="text/javascript" src="{{ preview_email_asset('js/app.js') }}"></script>
 </body>
 </html>

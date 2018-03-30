@@ -1,43 +1,41 @@
 <template>
     <div>
-        <div class="container-fluid mt-4">
-            <div class="row" v-if="emailList.length > 0">
-                <div class="col-4">
-                    <ul class="list-group">
+        <div class="row no-gutters" v-if="emailList.length > 0">
+            <div class="col-4 sidebar">
+                <ul class="list-group">
+                    
+                    <li class="list-group-item" 
+                        v-for="email in emailList" 
+                        @click="selectEmail(email)"
+                        :class="{'list-group-item-secondary' : email.id == selectedEmail.id }">
                         
-                        <li class="list-group-item" 
-                            v-for="email in emailList" 
-                            @click="selectEmail(email)"
-                            :class="{'list-group-item-secondary' : email.id == selectedEmail.id }">
-                            
-                            <div class="mb-2">
-                                {{ email.subject }} - 
-                                <span class="badge" :class="{ 'badge-warning' : !email.read, 'badge-success' : email.read }">
-                                    {{ email.read ? 'READ' : 'UNREAD' }}
-                                </span>
+                        <div class="mb-2">
+                            {{ email.subject }} - 
+                            <span class="badge" :class="{ 'badge-warning' : !email.read, 'badge-success' : email.read }">
+                                {{ email.read ? 'READ' : 'UNREAD' }}
+                            </span>
 
-                                <button type="button" class="close" @click="deleteEmail(email)">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
+                            <button type="button" class="close" @click="deleteEmail(email)">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
 
-                            <small class="text-secondary">
-                                To: 
-                                <span v-for="(value, key) in JSON.parse(email.to)">
-                                    {{ key }} {{ value }}
-                                </span>
-                            </small>
-                            <small class="text-secondary float-right">
-                                {{ getDate(email.created_at) }}
-                            </small>
+                        <small class="text-secondary">
+                            To: 
+                            <span v-for="(value, key) in JSON.parse(email.to)">
+                                {{ key }} {{ value }}
+                            </span>
+                        </small>
+                        <small class="text-secondary float-right">
+                            {{ getDate(email.created_at) }}
+                        </small>
 
-                        </li>
-                    </ul>
+                    </li>
+                </ul>
+            </div>
 
-
-                </div>
-
-                <div class="col-8">
+            <div class="col-8">
+                <div class="email-content">
                     <div class="card">
                         <div class="card-body">
                             <template v-if="selectedEmail.subject">
@@ -82,10 +80,10 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div v-if="emailList.length == 0">
-                You have no emails sent out yet. Start sending emails!
-            </div>
+        <div v-if="emailList.length == 0">
+            You have no emails sent out yet. Start sending emails!
         </div>
     </div>
 </template>

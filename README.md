@@ -5,6 +5,9 @@ Forked from [Laravel Mail Preview](https://github.com/themsaid/laravel-mail-prev
 This package introduces a new `preview` and `local` mail driver for Laravel that when selected will render the content of the
 sent email and save it as both `.html` and `.eml` files.
 
+![localemail](https://seyongcho.com/wp-content/uploads/2018/03/Screen-Shot-2018-03-30-at-11.53.30-AM.png "Local Email")
+
+
 ## Installation
 
 Begin by installing the package through Composer. Run the following command in your terminal:

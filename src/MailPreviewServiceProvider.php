@@ -33,7 +33,6 @@ class MailPreviewServiceProvider extends ServiceProvider
         }
 
         if ($this->app['config']['mailpreview.show_link_to_preview']) {
-
             $this->app['router']->group(['middleware' => $this->middleware()], function ($router) {
                 $router->get('/themsaid/mail-preview')->uses(MailPreviewController::class.'@preview');
             });
@@ -52,7 +51,8 @@ class MailPreviewServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/config/mailpreview.php', 'mailpreview'
+            __DIR__.'/config/mailpreview.php',
+            'mailpreview'
         );
 
         $this->app->register(MailProvider::class);
